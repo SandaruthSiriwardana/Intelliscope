@@ -103,7 +103,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_below="@id/customTextView">
+                android:layout_below="@id/customTextView"
+                android:layout_marginBottom="20dp">
 
                 <EditText
                     android:id="@+id/nameEditText"
