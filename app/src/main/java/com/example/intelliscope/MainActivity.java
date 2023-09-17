@@ -5,9 +5,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
@@ -160,8 +164,14 @@ public class MainActivity extends AppCompatActivity {
         customTextView = findViewById(R.id.customTextView);
         // for save
         nameEditText = findViewById(R.id.nameEditText);
-        savedNameTextView = findViewById(R.id.savedNameTextView);
+        Button saveButton = findViewById(R.id.saveButton);
 
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveName();
+            }
+        });
     }
 
     private ArrayList<Entry> dataValues1(){
@@ -237,8 +247,41 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // This method is invoked when the "Save" button is clicked
-    public void saveName(View view) {
-        String enteredName = nameEditText.getText().toString();
-        savedNameTextView.setText("Saved Name: " + enteredName);
+    public void saveName(){
+        // Get the name from the EditText
+        String name = nameEditText.getText().toString();
+
+        if (!name.isEmpty()) {
+            // Create a custom Toast for successful save
+            LayoutInflater inflater = getLayoutInflater();
+            View layout = inflater.inflate(R.layout.custom_toast, null);
+
+            TextView text = layout.findViewById(R.id.customToastMessageSuccessfully);
+            text.setText("Your data saved successfully..🥰");
+
+            Toast toast = new Toast(getApplicationContext());
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.setDuration(Toast.LENGTH_SHORT);
+            toast.setView(layout);
+            toast.show();
+
+            // Clear the name EditText after a successful save
+            nameEditText.setText("");
+        } else {
+            // Create a custom Toast for the "Please enter a name" error message
+            LayoutInflater inflater = getLayoutInflater();
+            View layout = inflater.inflate(R.layout.custom_toast_error, null);
+
+            TextView text = layout.findViewById(R.id.customToastMessageError);
+            text.setText("Please enter a name..😑");
+
+            Toast toast = new Toast(getApplicationContext());
+            toast.setGravity(Gravity.CENTER, 0, 0);
+            toast.setDuration(Toast.LENGTH_SHORT);
+            toast.setView(layout);
+            toast.show();
+        }
     }
+
+
 }

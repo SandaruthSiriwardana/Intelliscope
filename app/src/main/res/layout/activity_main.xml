@@ -121,16 +121,6 @@
                     android:text="Save"
                     android:layout_marginRight="20dp"/>
             </LinearLayout>
-
-            <TextView
-                android:id="@+id/savedNameTextView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/saveButton"
-                android:layout_centerHorizontal="true"
-                android:layout_margin="20dp"
-                android:text=""
-                android:textSize="24sp" />
         </LinearLayout>
     </ScrollView>
 </RelativeLayout>
