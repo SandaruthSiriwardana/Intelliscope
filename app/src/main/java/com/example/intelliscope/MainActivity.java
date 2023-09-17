@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
@@ -21,6 +24,12 @@ public class MainActivity extends AppCompatActivity {
 
     LineChart mpLineChart;
     LineChart mpLineChart2;
+
+    private TextView customTextView;
+
+    private EditText nameEditText;
+    private TextView savedNameTextView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,24 +59,20 @@ public class MainActivity extends AppCompatActivity {
         int customColor = Color.parseColor("#FAE5E3"); // Parse the hexadecimal color
         mpLineChart.setBackgroundColor(customColor);  // set background colour
         mpLineChart.setDrawBorders(true); // Background borders
+        mpLineChart.setVisibleXRangeMaximum(2000); //allow 2000 values to be displayed at once on the x-axis, not more
+        mpLineChart.moveViewToX(1000);//set the left edge of the chart to x-index 1000
+        mpLineChart.getAxisLeft().setDrawLabels(false); // For the left Y-axis
+        mpLineChart.getAxisRight().setDrawLabels(false); // For the right Y-axis (if enabled)
 //        mpLineChart.setBorderColor(Color.BLACK);
 //        mpLineChart.setBorderWidth(2);
 //        mpLineChart.setDrawGridBackground(true);
 
         // Legend ECG
-
         Legend legend =mpLineChart.getLegend();
         legend.setEnabled(false);
-
         // Description ECG
-
-        Description description=new Description();
-        description.setText("ECG");
-        description.setTextSize(20);
-        mpLineChart.setDescription(description);
-
+        mpLineChart.getDescription().setEnabled(false);
         // Animate ECG
-
         mpLineChart.animateX(15000); // change speed (Time increase --> graph animate slowly)
 
         // ******************************************Heart Sound Graph **************************************
@@ -82,32 +87,38 @@ public class MainActivity extends AppCompatActivity {
         dataSets2.add(lineDataSet3); // add to graph 2
         dataSets2.add(lineDataSet4);
         LineData data2 = new LineData(dataSets2);
+
         mpLineChart2.setData(data2);
         mpLineChart2.invalidate();
 
         //Customize Graph Line HS---------------------------------------------------------
         lineDataSet2.setLineWidth(1);
-        lineDataSet2.setColor(Color.parseColor("#B9FEDB")); // change line color
+        lineDataSet2.setColor(Color.BLACK); // change line color
         lineDataSet2.setDrawCircleHole(false);
         lineDataSet2.setDrawCircles(false);
         lineDataSet2.setDrawValues(false);
 
         lineDataSet3.setLineWidth(1);
-        lineDataSet3.setColor(Color.parseColor("#B9FEDB")); // change line color
+//        lineDataSet3.setColor(Color.parseColor("#B9FEDB")); // change line color
+        lineDataSet3.setColor(Color.BLACK); // change line color
         lineDataSet3.setDrawCircleHole(false);
         lineDataSet3.setDrawCircles(false);
         lineDataSet3.setDrawValues(false);
 
         lineDataSet4.setLineWidth(1);
-        lineDataSet4.setColor(Color.parseColor("#B9FEDB")); // change line color
+        lineDataSet4.setColor(Color.BLACK); // change line color
         lineDataSet4.setDrawCircleHole(false);
         lineDataSet4.setDrawCircles(false);
         lineDataSet4.setDrawValues(false);
 
         // Background HS
-        int customColor2 = Color.parseColor("#125A7B"); // Back ground color use hexadecimal color
+        int customColor2 = Color.parseColor("#FAE5E3"); // Back ground color use hexadecimal color
         mpLineChart2.setBackgroundColor(customColor2);  // set background colour
         mpLineChart2.setDrawBorders(true); // Background borders
+        mpLineChart2.setVisibleXRangeMaximum(8000); //allow 2000 values to be displayed at once on the x-axis, not more
+        mpLineChart2.moveViewToX(1000);//set the left edge of the chart to x-index 1000
+        mpLineChart2.getAxisLeft().setDrawLabels(false); // For the left Y-axis
+        mpLineChart2.getAxisRight().setDrawLabels(false); // For the right Y-axis (if enabled)
 //        mpLineChart.setBorderColor(Color.BLACK);
 //        mpLineChart.setBorderWidth(2);
 //        mpLineChart.setDrawGridBackground(true);
@@ -117,18 +128,13 @@ public class MainActivity extends AppCompatActivity {
         legend2.setEnabled(false);
 
         // Description HS
-        Description description2=new Description();
-        description2.setText("HS");
-        description2.setTextSize(20);
-        mpLineChart2.setDescription(description2);
+        mpLineChart2.getDescription().setEnabled(false);
 
         // Animate HS
         mpLineChart2.animateX(3000); // change speed
 
 
-
-
-//        Bottom Navigation Bar
+//        Top Navigation Bar
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigation);
         bottomNavigationView.setSelectedItemId(R.id.bottom_home); // change
         bottomNavigationView.setOnItemSelectedListener(item -> {
@@ -149,6 +155,12 @@ public class MainActivity extends AppCompatActivity {
 
             return false;
         });
+
+        // for predict
+        customTextView = findViewById(R.id.customTextView);
+        // for save
+        nameEditText = findViewById(R.id.nameEditText);
+        savedNameTextView = findViewById(R.id.savedNameTextView);
 
     }
 
@@ -218,6 +230,15 @@ public class MainActivity extends AppCompatActivity {
             dataVals1.add(new Entry(i, (float) arr2[i-16000]));
         }
         return dataVals1;
+    }
 
+    public void showCustomText(View view) {                 // for generate text after clicking predict button
+        customTextView.setText("This is my prediction.");
+    }
+
+    // This method is invoked when the "Save" button is clicked
+    public void saveName(View view) {
+        String enteredName = nameEditText.getText().toString();
+        savedNameTextView.setText("Saved Name: " + enteredName);
     }
 }
